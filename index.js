@@ -1,13 +1,12 @@
 const puppeteer = require('puppeteer');
 
 (async () => {
-  // Launch Puppeteer with required options
+  // Launch Puppeteer
   const browser = await puppeteer.launch({
-    headless: true,  // Run headless browser
+    headless: true,
     args: [
       '--no-sandbox', 
       '--disable-setuid-sandbox',
-      '--disable-gpu', 
       '--disable-dev-shm-usage'
     ]
   });
@@ -15,10 +14,11 @@ const puppeteer = require('puppeteer');
   const page = await browser.newPage();
   await page.goto('https://rejseplanen.dk/', { waitUntil: 'networkidle2' });
 
-  // Extract data from the page
+  // Extract and log title
   const title = await page.title();
   console.log("Page Title:", title);
 
+  // Extract specific content
   const content = await page.evaluate(() => {
     return document.querySelector('h1')?.innerText || 'No Header Found';
   });
